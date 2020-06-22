@@ -1,0 +1,32 @@
+/**
+ *  Source: https://www.javatmp.com/blogs/tutorial/bootstrap-4-multilevel-dropdown-menu-on-mouse-hover
+ */
+.dropdown-submenu {
+    position: relative;   
+}
+
+.dropdown-submenu > .dropdown-item::after {
+    content: ">";
+    float: right;
+}
+
+.dropdown-submenu > .dropdown-menu {
+    top: 0;
+    left: 100%;
+    margin-top: 0;
+    margin-left: 0;   
+}
+
+/**
+ *  Changing the default appearance (default in Bootstrap) of the menu open button
+ */
+/*
+.dropdown-toggle::after {
+    border-left-color: #6c757d !important;
+    content: ">" !important;   
+}
+
+.dropdown-toggle:hover > .dropdown-toggle::after {
+    border-left-color: #5a6268 !important;   
+}
+*/
