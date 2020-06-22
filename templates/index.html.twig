@@ -11,36 +11,56 @@
 
 {% block body %}
 <div class="btn-group-vertical ml-3 mt-5" role="group">
-    <button type="button" class="btn btn-link btn-outline-light border border-success">&#43;</button>
+    <button type="button" class="btn text-dark border border-success btn-outline-light add-menu-item" data-toggle="modal" data-target="#change-menu-item-modal">&#43;</button>
     <button type="button" class="btn btn-secondary">Menu 1</button>
     <button type="button" class="btn btn-secondary">Menu 2</button>
     <div class="btn-group dropright" role="group">
         <button id="btnGroupDrop1" type="button" class="btn btn-secondary dropdown-toggle" data-toggle="dropdown" aria-expanded="false">Menu 3</button>
         <div class="dropdown-menu" aria-labelledby="btnGroupDrop1">
-            <button type="button" class="btn btn-link border border-success dropdown-item">&#43;</button>
+            <button type="button" class="btn border border-success dropdown-item add-menu-item">&#43;</button>
             <div class="dropdown-submenu">
                 <button type="button" class="btn bg-secondary text-light dropdown-item">Menu 4</button>
                 <div class="dropdown-menu">
-                    <button type="button" class="btn btn-link border border-success dropdown-item">&#43;</button>
+                    <button type="button" class="btn border border-success dropdown-item add-menu-item">&#43;</button>
                     <button type="button" class="btn bg-secondary text-light dropdown-item">Menu 6</button>
                     <button type="button" class="btn bg-secondary text-light dropdown-item">Menu 7</button>
                     <div class="dropdown-submenu">
                         <button type="button" class="btn bg-secondary text-light dropdown-item">Menu 8</button>
                         <div class="dropdown-menu">
-                            <button type="button" class="btn btn-link border border-success dropdown-item">&#43;</button>
+                            <button type="button" class="btn border border-success dropdown-item add-menu-item">&#43;</button>
                             <button type="button" class="btn bg-secondary text-light dropdown-item">Menu 9</button>
                             <button type="button" class="btn bg-secondary text-light dropdown-item">Menu 10</button>
                             <button type="button" class="btn bg-secondary text-light dropdown-item">Menu 11</button>
-                            <button type="button" class="btn btn-link border border-success dropdown-item">&#43;</button>
+                            <button type="button" class="btn border border-success dropdown-item add-menu-item">&#43;</button>
                         </div>
                     </div>
-                    <button type="button" class="btn btn-link border border-success dropdown-item">&#43;</button>
+                    <button type="button" class="btn border border-success dropdown-item add-menu-item">&#43;</button>
                 </div> 
             </div>
             <button type="button" class="btn bg-secondary text-light dropdown-item">Menu 5</button>
-            <button type="button" class="btn btn-link border border-success dropdown-item">&#43;</button>
+            <button type="button" class="btn border border-success dropdown-item add-menu-item">&#43;</button>
         </div>
     </div>
-    <button type="button" class="btn btn-link btn-outline-light border border-success">&#43;</button>
+    <button type="button" class="btn text-dark border border-success btn-outline-light add-menu-item">&#43;</button>
+    
+    <div id="change-menu-item-modal" class="modal" tabindex="-1" role="dialog">
+        <div class="modal-dialog" role="document">
+            <div class="modal-content">
+                <div class="modal-header">
+                    <h5 class="modal-title">Hello!</h5>
+                    <button type="button" class="close" data-dismiss="modal">
+                        <span aria-hidden="true">&times;</span>
+                    </button>
+                </div>
+                <div class="modal-body">
+                    <p>Hehehe</p>
+                </div>
+                <div class="modal-footer">
+                    <button type="button" class="btn btn-secondary" data-dismiss="modal">Close</button>
+                    <button type="button" class="btn btn-primary">Save changes</button>
+                </div>
+            </div>
+        </div>
+    </div>
 </div>
 {% endblock body %}
