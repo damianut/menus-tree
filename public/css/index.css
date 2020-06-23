@@ -8,6 +8,7 @@
 .dropdown-submenu > .dropdown-item::after {
     content: ">";
     float: right;
+    margin-left: 20px;
 }
 
 .dropdown-submenu > .dropdown-menu {

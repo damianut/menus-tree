@@ -2,157 +2,13 @@
 
 
 //=============================================================================/
-// CLASSES
+// GLOBAL VARIABLES
 //=============================================================================/
 
-/**
- * Adding menu item.
- */
-class addMenuItem {
-  constructor() {
-    this.modId = '#change-menu-item-modal';
-    this.plusBtnClass = 'button.add-menu-item';
-    this.saveBtnClass = 'button.modal-saving-btn';
-  }
+var modId = '#change-menu-item-modal';
+var plusBtnClass = 'button.add-menu-item';
+var saveBtnClass = 'button.modal-saving-btn';
 
-  /**
-   * Cloning menu item with empty submenu
-   */
-  cloneMenuItem(elName) {
-    let menuItem = $('#empty-submenu').clone();
-    menuItem.removeAttr('id');
-    menuItem.removeClass('d-none');
-    menuItem.children()[0].value = elName;
-  
-    return menuItem;
-  }
-  
-  /**
-   * Cloning "+" button.
-   */
-  clonePlusBtn() {
-    let plusBtn = $('#proto-plus-btn').clone();
-    plusBtn.removeAttr('id');
-    plusBtn.removeClass('d-none');
-  
-    return plusBtn;
-  }
-
-  /**
-   * Change color of generally selected button(s)
-   */
-  changeClickedBtnColorGen(selected) {
-    selected.on('mousedown', function() {
-      $(this).css('background-color', 'rgb(40, 167, 69)');
-      $(this).removeClass('text-dark');
-      $(this).addClass('text-light');
-    });
-    selected.on('mouseup', function() {
-      $(this).css('background-color', 'rgb(248, 249, 250)');
-      $(this).removeClass('text-light');
-      $(this).addClass('text-dark');
-    });
-  }
-  
-  /**
-   * Change color of all "+" buttons while clicking.
-   */
-  changeClickedBtnColor() {
-    this.changeClickedBtnColorGen($('button.add-menu-item'));
-  }
-
-  /**
-   * "click" event handler function for "+" button.
-   *
-   * By clicking "+" button user can toggle modal.
-   * If modal is hidden, it will be shown and "createMenuItem" handler will be
-   * attached to this "+" button. If modal closes without saving; this handler
-   * will be detached.
-   *
-   * Else if modal is shown, modal is toggled only.
-   */
-  clickEvtHandler(e) {
-    let modId = this.modId;
-    let plusBtnClass = this.plusBtnClass;
-    let saveBtnClass = this.saveBtnClass;
-/*............................................................................*/
-    do {
-      if ($(modId).hasClass('show')) {
-        break;
-      }
-      $(this).one('createMenuItem', function(e, data) {
-        e.stopPropagation();
-        let menuItem = cloneMenuItem(data.elName);
-        /**
-         * If only one "+" button exists in this menu, add new menu item and
-         * second "+" button.
-         *
-         * Else if two "+" buttons exist and user clicked first of these
-         * buttons, add new menu item after "+" button.
-         *
-         * Else add new menu item before "+" button.
-         */
-        if ($(this).parent().children().length === 1) {
-          let plusBtn = clonePlusBtn();
-          $(this).after(menuItem);
-          changeClickedBtnColorGen(plusBtn);
-          $(this).parent().children('.dropdown-item').after(plusBtn);
-          $(plusBtnClass).off('click');
-          handlePlusBtn();
-        } else if ($(this).parent().children()[0] === $(this)[0]) {
-          $(this).after($(menuItemHtml));
-        } else {
-          $(this).before($(menuItemHtml));
-        }
-/*............................................................................*/
-      /**
-       *  data.elName - tutaj mam nazwę nowego elementu
-       *  Utworzyć button z tą nazwą i nadać ID.
-       *  Ustalić, czy naciśnięty button z plusikiem jest na górze czy dole
-       *  Jeśli jest tylko jeden plusik, to pod nim dodać nowy element z nazwą,
-       *  a potem dodać kolejny plusik (i nadać mu eventListener)
-       *  A jak dwa, to dodać element tuż pod lub tuż nad buttonem z plusikiem.
-       *  Oraz nadać odpowiednie eventListenery
-       *  Jak wywołać event, który zostanie przechwycony przez dowolny button z plusikiem?
-       */
-      });
-      $(modId).one('hidden.bs.modal', $(this), function(e) {
-        $(e.data[0]).off('createMenuItem');
-      });
-    } while (false);
-    $(modId).modal('toggle');
-  }
-
-  /**
-   * Attachment "click" event handler function to all "+" buttons
-   */
-  enablePlusBtns() {
-    $(plusBtnClass).on('click', function(e) {
-      this.clickEvtHandler(e);
-    });
-  }
-
-  /**
-   * Prepare "Zapisz tymczasowo" button to take a part in add menu item process
-   */
-  enableSaveBtn() {
-    let modId = this.modId;
-    let plusBtnClass = this.plusBtnClass;
-    let saveBtnClass = this.saveBtnClass;
-    $(saveBtnClass).on('click', function() {
-      let elName = $(this).parents(modId).find('#menu_item_name')[0].value;
-      $(plusBtnClass).trigger('createMenuItem', {'elName': elName});
-    });
-  }
-  
-  /**
-   * Enable adding new menu item.
-   */
-  enableAdding() {
-    this.enablePlusBtns();
-    this.enableSaveBtn();
-  }
-}
 
 //=============================================================================/
 // EXECUTED FUNCTIONS
@@ -161,15 +17,33 @@ class addMenuItem {
 window.onload = function() {
   disableMenuClosing();
   multilevelMenusNesting();
-  let menuItemCreator = new addMenuItem();
-  menuItemCreator.changeClickedBtnColor();
-  menuItemCreator.enableAdding();
+  changeClickedBtnColor();
+  enableAdding();
   savingChanges();
 }
 
 
 //=============================================================================/
-// FUNCTIONS
+// DEFINITIONS OF FUNCTIONS
+//=============================================================================/
+
+//=============================================================================/
+// functions: VALIDATION
+//=============================================================================/
+
+/**
+ * Check that name contains only alphanumeric chars and space.
+ *
+ * Return true, if name is valid. False otherwise.
+ */
+function validateItemName(itemName) {
+  let regex = new RegExp("[^\\w\\s]+", "m");
+
+  return !regex.test(itemName);
+}
+
+//=============================================================================/
+// functions: ALLOW MENUS NESTING
 //=============================================================================/
 
 /**
@@ -198,6 +72,7 @@ function multilevelMenusNesting() {
   });
 }
 
+
 //=============================================================================/
 // functions: CONTACT WITH DATABASE
 //=============================================================================/
@@ -209,6 +84,140 @@ function savingChanges() {
   $('#save_to_db').on('click', function() {
     
   });
+}
+
+
+//=============================================================================/
+// functions: ADDING MENU ITEM
+//=============================================================================/
+
+/**
+ * Cloning menu item with empty submenu
+ */
+function cloneMenuItem(elName) {
+  let menuItem = $('#empty-submenu').clone();
+  menuItem.removeAttr('id');
+  menuItem.removeClass('d-none');
+  menuItem.children('.dropdown-item')[0].innerHTML = elName;
+
+  return menuItem;
+}
+
+/**
+ * Cloning "+" button.
+ */
+function clonePlusBtn() {
+  let plusBtn = $('#proto-plus-btn').clone();
+  plusBtn.removeAttr('id');
+  plusBtn.removeClass('d-none');
+
+  return plusBtn;
+}
+/**
+ * Change color of generally selected button(s)
+ */
+function changeClickedBtnColorGen(selected) {
+  selected.on('mousedown', function() {
+    $(this).css('background-color', 'rgb(40, 167, 69)');
+    $(this).removeClass('text-dark');
+    $(this).addClass('text-light');
+  });
+  selected.on('mouseup', function() {
+    $(this).css('background-color', 'rgb(248, 249, 250)');
+    $(this).removeClass('text-light');
+    $(this).addClass('text-dark');
+  });
+}
+
+/**
+ * Change color of all "+" buttons while clicking.
+ */
+function changeClickedBtnColor() {
+  changeClickedBtnColorGen($(plusBtnClass));
+}
+
+/**
+ * Procedure which taken place when "click" event on "+" button is fired.
+ *
+ * By clicking "+" button user can toggle modal.
+ * If modal is hidden, it will be shown and "createMenuItem" handler will be
+ * attached to this "+" button. If modal closes without saving; this handler
+ * will be detached.
+ *
+ * Else if modal is shown, modal is toggled only.
+ */
+function plusBtnsProcedure(e) {
+  do {
+    if ($(modId).hasClass('show')) {
+      break;
+    }
+    $(e.target).one('createMenuItem', function(eSub, data) {
+      eSub.stopPropagation();
+      let menuItem = cloneMenuItem(data.elName);
+      /**
+       * If only one "+" button exists in this menu, add new menu item and
+       * second "+" button.
+       *
+       * Else if two "+" buttons exist and user clicked first of these
+       * buttons, add new menu item after "+" button.
+       *
+       * Else add new menu item before "+" button.
+       */
+      if ($(this).parent().children().length === 1) {
+        let plusBtn = clonePlusBtn();
+        $(this).after(menuItem);
+        changeClickedBtnColorGen(plusBtn);
+        menuItem.after(plusBtn);
+        plusBtn.on('click', function(evtSub) {
+          plusBtnsProcedure(evtSub);
+        });
+      } else if ($(this).parent().children()[0] === $(this)[0]) {
+        $(this).after($(menuItem));
+      } else {
+        $(this).before($(menuItem));
+      }
+      $(modId).find('#menu_item_name').val('');
+      $(modId).modal('toggle');
+    });
+    $(modId).one('hidden.bs.modal', $(this), function(e) {
+      $(e.data[0]).off('createMenuItem');
+    });
+  } while (false)
+  $(modId).modal('toggle');
+}
+
+/**
+ * Attachment "click" event handler function to all "+" buttons
+ */
+function enablePlusBtns() {
+  $(plusBtnClass).on('click', function(e) {
+    plusBtnsProcedure(e);
+  });
+}
+
+/**
+ * Prepare "Zapisz tymczasowo" button to take a part in add menu item process
+ */
+function enableSaveBtn() {
+  $(saveBtnClass).on('click', function() {
+    let elName = $(this).parents(modId).find('#menu_item_name')[0].value;
+    if (validateItemName(elName)) {
+      $(plusBtnClass).trigger('createMenuItem', {'elName': elName});
+    } else {
+      let violationMsg =
+          '<h6 class="text-danger font-weight-bold">' +
+          'Wpisana nazwa zawiera niedozwolone znaki.</h6>';
+      $(modId).find('h6').after(violationMsg);
+    }
+  });
+}
+
+/**
+ * Enable adding new menu item.
+ */
+function enableAdding() {
+  enablePlusBtns();
+  enableSaveBtn();
 }
 /*............................................................................*/
 //=============================================================================/
