@@ -10,8 +10,15 @@
 {% endblock head %}
 
 {% block body %}
+<button id="save_to_db" type="button" class="btn btn-success fixed-top">Zachowaj zmiany</button>
+<div>
+    <div class="btn-group-vertical ml-3 mt-5" role="group">
+        <button type="button" class="btn text-dark border border-success btn-outline-light add-menu-item">&#43;</button>
+    </div>
+</div>
+
 <div class="btn-group-vertical ml-3 mt-5" role="group">
-    <button type="button" class="btn text-dark border border-success btn-outline-light add-menu-item" data-toggle="modal" data-target="#change-menu-item-modal">&#43;</button>
+    <button type="button" class="btn text-dark border border-success btn-outline-light add-menu-item">&#43;</button>
     <button type="button" class="btn btn-secondary">Menu 1</button>
     <button type="button" class="btn btn-secondary">Menu 2</button>
     <div class="btn-group dropright" role="group">
@@ -47,20 +54,35 @@
         <div class="modal-dialog" role="document">
             <div class="modal-content">
                 <div class="modal-header">
-                    <h5 class="modal-title">Hello!</h5>
+                    <h5 class="modal-title">Utwórz element menu</h5>
                     <button type="button" class="close" data-dismiss="modal">
                         <span aria-hidden="true">&times;</span>
                     </button>
                 </div>
                 <div class="modal-body">
-                    <p>Hehehe</p>
+                    <h6 class="mb-3">Nazwa elementu może zawierać wyłącznie znaki alfanumeryczne oraz spację.</h6>
+                    {{ form(form) }}
                 </div>
                 <div class="modal-footer">
-                    <button type="button" class="btn btn-secondary" data-dismiss="modal">Close</button>
-                    <button type="button" class="btn btn-primary">Save changes</button>
+                    <button type="button" class="btn btn-secondary" data-dismiss="modal">Zamknij</button>
+                    <button type="button" class="btn btn-primary modal-saving-btn">Zapisz tymczasowo</button>
                 </div>
             </div>
         </div>
     </div>
+</div>
+
+<!-- Code for cloning in jQuery -->
+<div>
+    <!-- Menu item with empty submenu for cloning while adding new element in menu -->
+    <div id="empty-submenu" class="dropdown-submenu d-none">
+        <button type="button" class="btn bg-secondary text-light dropdown-item"></button>
+        <div class="dropdown-menu">
+            <button type="button" class="btn border border-success dropdown-item add-menu-item">&#43;</button>
+        </div>
+    </div>
+    
+    <!-- "Prototype" of "+" button -->
+    <button id="proto-plus-btn" type="button" class="btn border border-success dropdown-item add-menu-item d-none">&#43;</button>
 </div>
 {% endblock body %}
