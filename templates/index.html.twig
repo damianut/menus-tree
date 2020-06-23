@@ -11,19 +11,30 @@
 
 {% block body %}
 <button id="save_to_db" type="button" class="btn btn-success fixed-top">Zachowaj zmiany</button>
+<div class="btn-group-vertical ml-3 mt-5" role="group">
+    <button type="button" class="btn border border-success dropdown-item add-menu-item">&#43;</button>
+</div>
+
 <div>
-    <div class="btn-group-vertical ml-3 mt-5" role="group">
-        <button type="button" class="btn text-dark border border-success btn-outline-light add-menu-item">&#43;</button>
-    </div>
 </div>
 
 <div class="btn-group-vertical ml-3 mt-5" role="group">
-    <button type="button" class="btn text-dark border border-success btn-outline-light add-menu-item">&#43;</button>
-    <button type="button" class="btn btn-secondary">Menu 1</button>
-    <button type="button" class="btn btn-secondary">Menu 2</button>
-    <div class="btn-group dropright" role="group">
-        <button id="btnGroupDrop1" type="button" class="btn btn-secondary dropdown-toggle" data-toggle="dropdown" aria-expanded="false">Menu 3</button>
-        <div class="dropdown-menu" aria-labelledby="btnGroupDrop1">
+    <button type="button" class="btn border border-success dropdown-item add-menu-item">&#43;</button>
+    <div class="dropdown-submenu">
+        <button type="button" class="btn bg-secondary text-light dropdown-item">Menu 1</button>
+        <div class="dropdown-menu">
+            <button type="button" class="btn border border-success dropdown-item add-menu-item">&#43;</button>
+        </div>
+    </div>
+    <div class="dropdown-submenu">
+        <button type="button" class="btn bg-secondary text-light dropdown-item">Menu 2</button>
+        <div class="dropdown-menu">
+            <button type="button" class="btn border border-success dropdown-item add-menu-item">&#43;</button>
+        </div>
+    </div>
+    <div class="dropdown-submenu">
+        <button type="button" class="btn bg-secondary text-light dropdown-item">Menu 3</button>
+        <div class="dropdown-menu">
             <button type="button" class="btn border border-success dropdown-item add-menu-item">&#43;</button>
             <div class="dropdown-submenu">
                 <button type="button" class="btn bg-secondary text-light dropdown-item">Menu 4</button>
@@ -48,8 +59,9 @@
             <button type="button" class="btn border border-success dropdown-item add-menu-item">&#43;</button>
         </div>
     </div>
-    <button type="button" class="btn text-dark border border-success btn-outline-light add-menu-item">&#43;</button>
-    
+    <button type="button" class="btn border border-success dropdown-item add-menu-item">&#43;</button>
+</div>
+<div>
     <div id="change-menu-item-modal" class="modal" tabindex="-1" role="dialog">
         <div class="modal-dialog" role="document">
             <div class="modal-content">
@@ -83,6 +95,6 @@
     </div>
     
     <!-- "Prototype" of "+" button -->
-    <button id="proto-plus-btn" type="button" class="btn text-dark border border-success btn-outline-light add-menu-item d-none">&#43;</button>
+    <button id="proto-plus-btn"  type="button" class="btn border border-success dropdown-item add-menu-item d-none">&#43;</button>
 </div>
 {% endblock body %}

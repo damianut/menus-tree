@@ -59,16 +59,24 @@ function disableMenuClosing() {
 }
 
 /**
- * Allow showing and hiding menus nested on all levels.
+ * "click" event handler that showing and hiding menus nested on all levels.
+ */
+function multilevelMenusNestingHandler(e) {
+  let visibility =
+      $(e.currentTarget).children('.dropdown-menu').css('display');
+  if ('none' === visibility) {
+    $(e.currentTarget).children('.dropdown-menu').css('display', 'block');
+  } else if ('block' === visibility) {
+    $(e.currentTarget).children('.dropdown-menu').css('display', 'none');
+  }
+}
+
+/**
+ * Attach above defined handler to '.dropdown-submenu' class
  */
 function multilevelMenusNesting() {
-  $('.dropdown-submenu').on('click', function() {
-    let visibility = $(this).children('.dropdown-menu').css('display');
-    if ('none' === visibility) {
-      $(this).children('.dropdown-menu').css('display', 'block');
-    } else if ('block' === visibility) {
-      $(this).children('.dropdown-menu').css('display', 'none');
-    }
+  $('.dropdown-submenu').on('click', function(e) {
+    multilevelMenusNestingHandler(e);
   });
 }
 
@@ -153,7 +161,33 @@ function plusBtnsProcedure(e) {
     }
     $(e.target).one('createMenuItem', function(eSub, data) {
       eSub.stopPropagation();
+      /**
+       * Clone new element of menu.
+       */
       let menuItem = cloneMenuItem(data.elName);
+      /**
+       * Allow showing and hiding submenus after clicking on this element.
+       */
+      menuItem.on('click', function(eSubSub) {
+        multilevelMenusNestingHandler(eSubSub);
+      });
+      /**
+       * Disable closing menu by clicking on menu.
+       *
+       * Stop propagation of "click" event to prevent closing menus by clicking
+       * another button, than button with "+" sign.
+       */
+      menuItem.find('.dropdown-menu').on('click', function(eSubSub2) {
+        eSubSub2.stopPropagation();
+      });
+      /**
+       * New menu contains "+" button. Below handler was attach on all buttons
+       * with 'add-menu-item' class while site loading. This event handler
+       * should also be attached to buttons created later.
+       */
+      menuItem.find(plusBtnClass).on('click', function(evtSub) {
+        plusBtnsProcedure(evtSub);
+      });
       /**
        * If only one "+" button exists in this menu, add new menu item and
        * second "+" button.
@@ -165,12 +199,13 @@ function plusBtnsProcedure(e) {
        */
       if ($(this).parent().children().length === 1) {
         let plusBtn = clonePlusBtn();
-        $(this).after(menuItem);
-        changeClickedBtnColorGen(plusBtn);
-        menuItem.after(plusBtn);
         plusBtn.on('click', function(evtSub) {
           plusBtnsProcedure(evtSub);
         });
+        changeClickedBtnColorGen(plusBtn);
+        $(this).after(menuItem);
+        menuItem.after(plusBtn);
+        
       } else if ($(this).parent().children()[0] === $(this)[0]) {
         $(this).after($(menuItem));
       } else {
