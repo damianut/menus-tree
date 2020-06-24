@@ -22,6 +22,9 @@ var menuItem = '.menu-item';
 //Dragged element
 var dragged;
 
+//Menus tree as array
+var menusTree = {};
+
 
 //=============================================================================/
 // EXECUTED FUNCTIONS
@@ -35,6 +38,7 @@ window.onload = function() {
   enableAddingMenuItem();
   enableChangingMenuItem();
   dragDropAllMenuItems();
+  enableDroppingByPlusBtns();
   savingChanges();
 }
 
@@ -52,7 +56,7 @@ window.onload = function() {
 // 7. Adding menu item
 // 8. Changing menu item
 // 9. Drag&Drop menu items
-// .. Contact with database
+// 10. Send information about menus tree to Symfony controller
 //
 //=============================================================================/
 
@@ -590,6 +594,46 @@ function makeSubmenusDraggable() {
 }
 
 /**
+ * Dropping procedure
+ *
+ * @var {Event} e "drop" event
+ */
+function droppingProcedure(e) {
+  e.preventDefault();
+  let dropped = $(e.target);
+  do {
+    /**
+     * Check that user try to drop the element on itself
+     */
+    if (dropped[0] === dragged[0]) {
+      break;
+    }
+    /**
+     * Remove "+" button, if dragged element is alone in submenu
+     */
+    let numOfMenuItems = dragged.parent().parent()
+        .children('.dropdown-submenu').length;
+    if (1 === numOfMenuItems) {
+      dragged.parent().parent().children('.add-menu-item').last().remove();
+    }
+    let lastMenuItem = dropped.parent().parent()
+        .children('.dropdown-submenu').last()[0];
+    /**
+     * HierarchyRequestError is catched to prevent display information
+     * information about it in console.
+     */
+    try {
+      if (dropped.parent()[0] === lastMenuItem) {
+        dropped.parent()[0].after(dragged.parent()[0]);
+      } else {
+        dropped.parent()[0].before(dragged.parent()[0]);
+      }
+    } catch (err) {}
+  } while (false);
+  dragged = dropped = undefined;
+}
+
+/**
  * Function for giving possibility to be dragged or dropped.
  *
  * @var {Object} menuItems Menu item or group of menu items, that we want to
@@ -603,32 +647,7 @@ function dragDropMenuItem(menuItems) {
     e.preventDefault();
   });
   menuItems.on('drop', function(e) {
-    e.preventDefault();
-    let dropped = $(e.target);
-    do {
-      /**
-       * Check that user try to drop the element on itself
-       */
-      if (dropped[0] === dragged[0]) {
-        break;
-      }
-      /**
-       * Remove "+" button, if dragged element is alone in submenu
-       */
-      let numOfMenuItems = dragged.parent().parent()
-          .children('.dropdown-submenu').length;
-      if (1 === numOfMenuItems) {
-        dragged.parent().parent().children('.add-menu-item').last().remove();
-      }
-      let lastMenuItem = dropped.parent().parent()
-          .children('.dropdown-submenu').last()[0];
-      if (dropped.parent()[0] === lastMenuItem) {
-        dropped.parent()[0].after(dragged.parent()[0]);
-      } else {
-        dropped.parent()[0].before(dragged.parent()[0]);
-      }
-    } while (false);
-    dragged = dropped = undefined;
+    droppingProcedure(e);
   });
 }
 
@@ -639,17 +658,54 @@ function dragDropAllMenuItems() {
   dragDropMenuItem($('.menu-item'));
 }
 
+/**
+ * Enable dropping menu item to empty submenu.
+ */
+function droppingByPlusBtnProcedure(e) {
+}
+
+/**
+ * Attach 'drop' event handler to "+" buttons
+ */
+function enableDroppingByPlusBtns() {
+}
+
 
 //=============================================================================/
-// . functions: CONTACT WITH DATABASE
+// 10. functions: SEND INFORMATION ABOUT TREE TO SYMFONY CONTROLLER
 //=============================================================================/
+
+function saveNamesToArray(domMenusTree, arrayMenusTree) {
+  do {
+    if (0 === domMenusTree.children('.dropdown-submenu').length) {
+      break;
+    }
+    //console.log(domMenusTree.children('.dropdown-submenu'));
+    domMenusTree.children('.dropdown-submenu').each(function(index, element) {
+      let nodeName = $(element).children('.menu-item').html();
+      arrayMenusTree[nodeName] = {};
+      saveNamesToArray(
+        $(element).children('.dropdown-menu'),
+        arrayMenusTree[nodeName]
+      );
+    })
+  } while (false);
+
+  return;
+}
 
 function savingChanges() {
   /**
    * Saving changes to database.
    */
   $('#save_to_db').on('click', function() {
-    
+    saveNamesToArray($('#menus-tree'), menusTree);
+    const url = window.location + 'save';
+    console.log(JSON.stringify(menusTree));
+    $.post(url, JSON.stringify(menusTree), function(data, status) {
+      console.log(`Data: ${data.Menu}`);
+      console.log(`Status: ${status}`);
+    });
   });
 }
 /*............................................................................*/

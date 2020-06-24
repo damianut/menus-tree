@@ -16,5 +16,15 @@ class Controller extends AbstractController
   {
     return $logic->response($request);
   }
+
+  /**
+   * @Route("/save", name="save", methods={"POST"})
+   */
+  public function save(Request $request)
+  {
+    dump($request);
+    exit;
+    return "<p>dgd</p>";
+  }
 }
 /*............................................................................*/
