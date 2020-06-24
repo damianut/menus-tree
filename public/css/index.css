@@ -19,6 +19,13 @@
 }
 
 /**
+ * Each item from (expect "+" buttons) has this class. 
+ */
+.menu-item {
+
+}
+
+/**
  *  Changing the default appearance (default in Bootstrap) of the menu open button
  */
 /*

@@ -42,6 +42,23 @@ function validateItemName(itemName) {
   return !regex.test(itemName);
 }
 
+/**
+ * Add violation message to modal.
+ */
+function addViolationMsg(violationMsg) {
+  let violationEl =
+    '<h6 class="text-danger font-weight-bold violation-msg">' + violationMsg +
+    '</h6>';
+  $(modId).find('h6').after(violationEl);
+}
+
+/**
+ * Remove violation message from modal.
+ */
+function removeViolationMsg() {
+  $(modId).find('h6.violation-msg').remove();
+}
+
 //=============================================================================/
 // functions: ALLOW MENUS NESTING
 //=============================================================================/
@@ -145,6 +162,21 @@ function changeClickedBtnColor() {
 }
 
 /**
+ * Check that user provided unique name.
+ */
+function checkUniquity(elName) {
+  let result = true;
+  $('.menu-item').each(function(){
+    if ($(this).html() === elName) {
+      result = false;
+      return;
+    }
+  });
+
+  return result;
+}
+
+/**
  * Procedure which taken place when "click" event on "+" button is fired.
  *
  * By clicking "+" button user can toggle modal.
@@ -232,18 +264,30 @@ function enablePlusBtns() {
 
 /**
  * Prepare "Zapisz tymczasowo" button to take a part in add menu item process
+ *
+ * After retrieving name of menu item, that user wants to add, remove violation
+ * message, if exists. 
+ * Then validate provided name and check, that name is unique.
+ * If name passed this test, trigger 'createMenuItem' event to create and add
+ * new menu item to menus tree by another handler.
  */
 function enableSaveBtn() {
   $(saveBtnClass).on('click', function() {
     let elName = $(this).parents(modId).find('#menu_item_name')[0].value;
-    if (validateItemName(elName)) {
+    do {
+      if (0 != $(modId).find('h6.violation-msg').length) {
+        removeViolationMsg();
+      }
+      if (!validateItemName(elName)) {
+        addViolationMsg('Wpisana nazwa zawiera niedozwolone znaki.');
+        break;
+      }
+      if (!checkUniquity(elName)) {
+        addViolationMsg('Nazwa jest już zajęta.');
+        break;
+      }
       $(plusBtnClass).trigger('createMenuItem', {'elName': elName});
-    } else {
-      let violationMsg =
-          '<h6 class="text-danger font-weight-bold">' +
-          'Wpisana nazwa zawiera niedozwolone znaki.</h6>';
-      $(modId).find('h6').after(violationMsg);
-    }
+    } while (false);
   });
 }
 

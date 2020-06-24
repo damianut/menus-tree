@@ -12,54 +12,54 @@
 {% block body %}
 <button id="save_to_db" type="button" class="btn btn-success fixed-top">Zachowaj zmiany</button>
 <div class="btn-group-vertical ml-3 mt-5" role="group">
-    <button type="button" class="btn border border-success dropdown-item add-menu-item">&#43;</button>
+    <button type="button" class="btn border border-success dropdown-item add-menu-item text-center">&#43;</button>
 </div>
 
 <div>
 </div>
 
 <div class="btn-group-vertical ml-3 mt-5" role="group">
-    <button type="button" class="btn border border-success dropdown-item add-menu-item">&#43;</button>
+    <button type="button" class="btn border border-success dropdown-item add-menu-item text-center">&#43;</button>
     <div class="dropdown-submenu">
-        <button type="button" class="btn bg-secondary text-light dropdown-item">Menu 1</button>
+        <button type="button" class="btn bg-secondary text-light dropdown-item menu-item">Menu 1</button>
         <div class="dropdown-menu">
-            <button type="button" class="btn border border-success dropdown-item add-menu-item">&#43;</button>
+            <button type="button" class="btn border border-success dropdown-item add-menu-item text-center">&#43;</button>
         </div>
     </div>
     <div class="dropdown-submenu">
-        <button type="button" class="btn bg-secondary text-light dropdown-item">Menu 2</button>
+        <button type="button" class="btn bg-secondary text-light dropdown-item menu-item">Menu 2</button>
         <div class="dropdown-menu">
-            <button type="button" class="btn border border-success dropdown-item add-menu-item">&#43;</button>
+            <button type="button" class="btn border border-success dropdown-item add-menu-item text-center">&#43;</button>
         </div>
     </div>
     <div class="dropdown-submenu">
-        <button type="button" class="btn bg-secondary text-light dropdown-item">Menu 3</button>
+        <button type="button" class="btn bg-secondary text-light dropdown-item menu-item">Menu 3</button>
         <div class="dropdown-menu">
-            <button type="button" class="btn border border-success dropdown-item add-menu-item">&#43;</button>
+            <button type="button" class="btn border border-success dropdown-item add-menu-item text-center">&#43;</button>
             <div class="dropdown-submenu">
-                <button type="button" class="btn bg-secondary text-light dropdown-item">Menu 4</button>
+                <button type="button" class="btn bg-secondary text-light dropdown-item menu-item">Menu 4</button>
                 <div class="dropdown-menu">
-                    <button type="button" class="btn border border-success dropdown-item add-menu-item">&#43;</button>
-                    <button type="button" class="btn bg-secondary text-light dropdown-item">Menu 6</button>
-                    <button type="button" class="btn bg-secondary text-light dropdown-item">Menu 7</button>
+                    <button type="button" class="btn border border-success dropdown-item add-menu-item text-center">&#43;</button>
+                    <button type="button" class="btn bg-secondary text-light dropdown-item menu-item">Menu 6</button>
+                    <button type="button" class="btn bg-secondary text-light dropdown-item menu-item">Menu 7</button>
                     <div class="dropdown-submenu">
-                        <button type="button" class="btn bg-secondary text-light dropdown-item">Menu 8</button>
+                        <button type="button" class="btn bg-secondary text-light dropdown-item menu-item">Menu 8</button>
                         <div class="dropdown-menu">
-                            <button type="button" class="btn border border-success dropdown-item add-menu-item">&#43;</button>
-                            <button type="button" class="btn bg-secondary text-light dropdown-item">Menu 9</button>
-                            <button type="button" class="btn bg-secondary text-light dropdown-item">Menu 10</button>
-                            <button type="button" class="btn bg-secondary text-light dropdown-item">Menu 11</button>
-                            <button type="button" class="btn border border-success dropdown-item add-menu-item">&#43;</button>
+                            <button type="button" class="btn border border-success dropdown-item add-menu-item text-center">&#43;</button>
+                            <button type="button" class="btn bg-secondary text-light dropdown-item menu-item">Menu 9</button>
+                            <button type="button" class="btn bg-secondary text-light dropdown-item menu-item">Menu 10</button>
+                            <button type="button" class="btn bg-secondary text-light dropdown-item menu-item">Menu 11</button>
+                            <button type="button" class="btn border border-success dropdown-item add-menu-item text-center">&#43;</button>
                         </div>
                     </div>
-                    <button type="button" class="btn border border-success dropdown-item add-menu-item">&#43;</button>
+                    <button type="button" class="btn border border-success dropdown-item add-menu-item text-center">&#43;</button>
                 </div> 
             </div>
-            <button type="button" class="btn bg-secondary text-light dropdown-item">Menu 5</button>
-            <button type="button" class="btn border border-success dropdown-item add-menu-item">&#43;</button>
+            <button type="button" class="btn bg-secondary text-light dropdown-item menu-item">Menu 5</button>
+            <button type="button" class="btn border border-success dropdown-item add-menu-item text-center">&#43;</button>
         </div>
     </div>
-    <button type="button" class="btn border border-success dropdown-item add-menu-item">&#43;</button>
+    <button type="button" class="btn border border-success dropdown-item add-menu-item text-center">&#43;</button>
 </div>
 <div>
     <div id="change-menu-item-modal" class="modal" tabindex="-1" role="dialog">
@@ -72,7 +72,7 @@
                     </button>
                 </div>
                 <div class="modal-body">
-                    <h6 class="mb-3">Nazwa elementu może zawierać wyłącznie znaki alfanumeryczne, spację oraz "_"</h6>
+                    <h6 class="mb-3">Nazwa elementu musi być unikalna i może zawierać wyłącznie znaki alfanumeryczne, spację oraz "_"</h6>
                     {{ form(form) }}
                 </div>
                 <div class="modal-footer">
@@ -88,13 +88,13 @@
 <div>
     <!-- Menu item with empty submenu for cloning while adding new element in menu -->
     <div id="empty-submenu" class="dropdown-submenu d-none">
-        <button type="button" class="btn bg-secondary text-light dropdown-item"></button>
+        <button type="button" class="btn bg-secondary text-light dropdown-item menu-item"></button>
         <div class="dropdown-menu">
-            <button type="button" class="btn border border-success dropdown-item add-menu-item">&#43;</button>
+            <button type="button" class="btn border border-success dropdown-item add-menu-item text-center">&#43;</button>
         </div>
     </div>
     
     <!-- "Prototype" of "+" button -->
-    <button id="proto-plus-btn"  type="button" class="btn border border-success dropdown-item add-menu-item d-none">&#43;</button>
+    <button id="proto-plus-btn"  type="button" class="btn border border-success dropdown-item add-menu-item text-center d-none">&#43;</button>
 </div>
 {% endblock body %}
