@@ -19,22 +19,9 @@
 }
 
 /**
- * Each item from (expect "+" buttons) has this class. 
+ * Each item from menu (expect "+" buttons)
+ * which can be visible to user has this class. 
  */
 .menu-item {
-
+    width: 140px;
 }
-
-/**
- *  Changing the default appearance (default in Bootstrap) of the menu open button
- */
-/*
-.dropdown-toggle::after {
-    border-left-color: #6c757d !important;
-    content: ">" !important;   
-}
-
-.dropdown-toggle:hover > .dropdown-toggle::after {
-    border-left-color: #5a6268 !important;   
-}
-*/

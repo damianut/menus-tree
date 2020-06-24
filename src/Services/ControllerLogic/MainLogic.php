@@ -2,7 +2,7 @@
 
 namespace App\Services\ControllerLogic;
 
-use App\Form\MenuItemType;
+use App\Form\{ChangeMenuItemType, MenuItemType};
 use Symfony\Component\Form\FormFactoryInterface;
 use Symfony\Component\HttpFoundation\{Response, Request};
 use Twig\Environment;
@@ -48,9 +48,11 @@ class MainLogic
    */
   public function response(Request $request): Response
   {
-    $form = $this->formFactory->create(MenuItemType::class);  
+    $createMenuItemForm = $this->formFactory->create(MenuItemType::class);
+    $changeMenuItemForm = $this->formFactory->create(ChangeMenuItemType::class);
     $content = $this->twig->render('index.html.twig', [
-        'form' => $form->createView(),
+        'createForm' => $createMenuItemForm->createView(),
+        'changeForm' => $changeMenuItemForm->createView(),
     ]);
     
     return new Response($content);

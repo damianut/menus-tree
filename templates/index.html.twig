@@ -40,29 +40,61 @@
                 <button type="button" class="btn bg-secondary text-light dropdown-item menu-item">Menu 4</button>
                 <div class="dropdown-menu">
                     <button type="button" class="btn border border-success dropdown-item add-menu-item text-center">&#43;</button>
-                    <button type="button" class="btn bg-secondary text-light dropdown-item menu-item">Menu 6</button>
-                    <button type="button" class="btn bg-secondary text-light dropdown-item menu-item">Menu 7</button>
+                    <div class="dropdown-submenu">
+                        <button type="button" class="btn bg-secondary text-light dropdown-item menu-item">Menu 6</button>
+                        <div class="dropdown-menu">
+                            <button type="button" class="btn border border-success dropdown-item add-menu-item text-center">&#43;</button>
+                        </div>
+                    </div>
+                    <div class="dropdown-submenu">
+                       <button type="button" class="btn bg-secondary text-light dropdown-item menu-item">Menu 7</button>
+                       <div class="dropdown-menu">
+                           <button type="button" class="btn border border-success dropdown-item add-menu-item text-center">&#43;</button>
+                       </div>
+                    </div>
                     <div class="dropdown-submenu">
                         <button type="button" class="btn bg-secondary text-light dropdown-item menu-item">Menu 8</button>
                         <div class="dropdown-menu">
                             <button type="button" class="btn border border-success dropdown-item add-menu-item text-center">&#43;</button>
-                            <button type="button" class="btn bg-secondary text-light dropdown-item menu-item">Menu 9</button>
-                            <button type="button" class="btn bg-secondary text-light dropdown-item menu-item">Menu 10</button>
-                            <button type="button" class="btn bg-secondary text-light dropdown-item menu-item">Menu 11</button>
+                            <div class="dropdown-submenu">
+                                <button type="button" class="btn bg-secondary text-light dropdown-item menu-item">Menu 9</button>
+                                <div class="dropdown-menu">
+                                    <button type="button" class="btn border border-success dropdown-item add-menu-item text-center">&#43;</button>
+                                </div>
+                            </div>
+                            <div class="dropdown-submenu">
+                                <button type="button" class="btn bg-secondary text-light dropdown-item menu-item">Menu 10</button>
+                                <div class="dropdown-menu">
+                                    <button type="button" class="btn border border-success dropdown-item add-menu-item text-center">&#43;</button>
+                                </div>
+                            </div>
+                            <div class="dropdown-submenu">
+                                <button type="button" class="btn bg-secondary text-light dropdown-item menu-item">Menu 11</button>
+                                <div class="dropdown-menu">
+                                    <button type="button" class="btn border border-success dropdown-item add-menu-item text-center">&#43;</button>
+                                </div>
+                            </div>
                             <button type="button" class="btn border border-success dropdown-item add-menu-item text-center">&#43;</button>
                         </div>
                     </div>
                     <button type="button" class="btn border border-success dropdown-item add-menu-item text-center">&#43;</button>
                 </div> 
             </div>
-            <button type="button" class="btn bg-secondary text-light dropdown-item menu-item">Menu 5</button>
+            <div class="dropdown-submenu">
+                <button type="button" class="btn bg-secondary text-light dropdown-item menu-item">Menu 5</button>
+                <div class="dropdown-menu">
+                    <button type="button" class="btn border border-success dropdown-item add-menu-item text-center">&#43;</button>
+                </div>
+            </div>
             <button type="button" class="btn border border-success dropdown-item add-menu-item text-center">&#43;</button>
         </div>
     </div>
     <button type="button" class="btn border border-success dropdown-item add-menu-item text-center">&#43;</button>
 </div>
+
+<!-- Modal for creating item in menu -->
 <div>
-    <div id="change-menu-item-modal" class="modal" tabindex="-1" role="dialog">
+    <div id="add-menu-item-modal" class="modal" tabindex="-1" role="dialog">
         <div class="modal-dialog" role="document">
             <div class="modal-content">
                 <div class="modal-header">
@@ -73,11 +105,38 @@
                 </div>
                 <div class="modal-body">
                     <h6 class="mb-3">Nazwa elementu musi być unikalna i może zawierać wyłącznie znaki alfanumeryczne, spację oraz "_"</h6>
-                    {{ form(form) }}
+                    {{ form(createForm) }}
                 </div>
                 <div class="modal-footer">
                     <button type="button" class="btn btn-secondary" data-dismiss="modal">Zamknij</button>
                     <button type="button" class="btn btn-primary modal-saving-btn">Zapisz tymczasowo</button>
+                </div>
+            </div>
+        </div>
+    </div>
+</div>
+
+<!-- Modal for editing and removing item from menu -->
+<div>
+    <div id="edit-remove-menu-item-modal" class="modal" tabindex="-1" role="dialog">
+        <div class="modal-dialog" role="document">
+            <div class="modal-content">
+                <div class="modal-header">
+                    <h5 class="modal-title">Edytowanie i usuwanie elementu menu</h5>
+                    <button type="button" class="close" data-dismiss="modal">
+                        <span aria-hidden="true">&times;</span>
+                    </button>
+                </div>
+                <div class="modal-body">
+                    <p>W celu zmiany nazwy elementu, edytuj nazwę w polu tekstowym oraz kliknij przycisk "Zmień nazwę".</p>
+                    <p>Aby usunąć element, kliknij "Usuń".</p>
+                    <p>Aby wyjść z okna, kliknij w krzyżyk lub przycisk "Zamknij" lub kliknij poza okno.</p>
+                    {{ form(changeForm) }}
+                </div>
+                <div class="modal-footer">
+                    <button type="button" class="btn btn-secondary" data-dismiss="modal">Zamknij</button>
+                    <button type="button" class="btn btn-danger modal-removing-btn">Usuń</button>
+                    <button type="button" class="btn btn-primary modal-editing-btn">Zmień nazwę</button>
                 </div>
             </div>
         </div>

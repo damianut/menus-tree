@@ -1,1 +1,9 @@
-Configure DATABASE_URL in .env.local.
+Projekt ten można nazwać "Edytorem menu". Można też dodać podstronę do
+wyświetlania menu już bez przycisków z "plusami", jednak nie było tego w treści
+zadania.
+
+Konfiguracja projektu:
+Utworzyć zmienną DATABASE_URL w pliku .env.local
+
+Projekt był testowany w przeglądarce Mozilla Firefox.
+/*............................................................................*/
