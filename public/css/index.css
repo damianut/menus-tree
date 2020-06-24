@@ -25,3 +25,18 @@
 .menu-item {
     width: 140px;
 }
+
+/**
+ * Remove padding from "+" buttons
+ */
+button.add-menu-item {
+    padding-bottom: 0 !important;
+    padding-top: 0 !important;
+}
+
+/**
+ * Remove padding from dropdown menus
+ */
+div.dropdown-menu {
+    padding: 0 !important;
+}

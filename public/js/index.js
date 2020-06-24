@@ -19,6 +19,9 @@ var deleteBtnClass = 'button.modal-removing-btn';
 //Menu item class
 var menuItem = '.menu-item';
 
+//Dragged element
+var dragged;
+
 
 //=============================================================================/
 // EXECUTED FUNCTIONS
@@ -28,8 +31,10 @@ window.onload = function() {
   disableMenuClosing();
   multilevelMenusNesting();
   changeClickedBtnColor();
+  makeSubmenusDraggable();
   enableAddingMenuItem();
   enableChangingMenuItem();
+  dragDropAllMenuItems();
   savingChanges();
 }
 
@@ -39,12 +44,14 @@ window.onload = function() {
 //
 // Order of function groups in this file:
 // 1. Validation
-// 2. Check uniquity of new menu item name
-// 3. Improving user comfort while creating menu
-// 4. Styles
-// 5. Allowing menu nesting
-// 6. Adding menu item
-// 7. Changing menu item
+// 2. Forms
+// 3. Check uniquity of new menu item name
+// 4. Improving user comfort while creating menu
+// 5. Styles
+// 6. Allowing menu nesting
+// 7. Adding menu item
+// 8. Changing menu item
+// 9. Drag&Drop menu items
 // .. Contact with database
 //
 //=============================================================================/
@@ -70,24 +77,63 @@ function validateItemName(itemName) {
  * Add violation message to modal.
  *
  * @var {string} violationMsg Message about violation for user
+ * @var {string} modalId      ID of modal
  */
-function addViolationMsg(violationMsg) {
+function addViolationMsg(violationMsg, modalId) {
   let violationEl =
     '<h6 class="text-danger font-weight-bold violation-msg">' + violationMsg +
     '</h6>';
-  $(modId).find('h6').after(violationEl);
+  $(modalId).find('.modal-body').children().last().before(violationEl);
 }
 
 /**
  * Remove violation message from modal.
+ *
+ * @var {string} modalId ID of modal
  */
-function removeViolationMsg() {
-  $(modId).find('h6.violation-msg').remove();
+function removeViolationMsg(modalId) {
+  $(modalId).find('h6.violation-msg').remove();
+}
+
+//=============================================================================/
+// 2. functions: FORMS
+//=============================================================================/
+
+/**
+ * Enter text in text input in modal for changing menu item
+ *
+ * @var {string} txt Text to enter
+ */
+function enterTextForChangeRemoveModInput(txt) {
+  $(changeRemoveModId).find('#change_menu_item_name').val(txt);
+}
+
+/**
+ * Clear text input with menu item name.
+ */
+function clearChangeRemoveModInput() {
+  enterTextForChangeRemoveModInput('');
+}
+
+/**
+ * Enter text in text input in modal for creating menu item
+ *
+ * @var {string} txt Text to enter
+ */
+function enterTextForModInput(txt) {
+  $(modId).find('#menu_item_name').val(txt);
+}
+
+/**
+ * Clear text input with menu item name.
+ */
+function clearModInput() {
+  enterTextForModInput('');
 }
 
 
 //=============================================================================/
-// 2. functions: CHECK UNIQUITY OF NEW MENU ITEM NAME
+// 3. functions: CHECK UNIQUITY OF NEW MENU ITEM NAME
 //=============================================================================/
 
 /**
@@ -109,7 +155,7 @@ function checkUniquity(elName) {
 
 
 //=============================================================================/
-// 3. functions: IMPROVING USER COMFORT WHILE CREATING MENU
+// 4. functions: IMPROVING USER COMFORT WHILE CREATING MENU
 //=============================================================================/
 
 /**
@@ -126,7 +172,7 @@ function disableMenuClosing() {
 
 
 //=============================================================================/
-// 4. functions: STYLES
+// 5. functions: STYLES
 //=============================================================================/
 
 /**
@@ -156,7 +202,7 @@ function changeClickedBtnColor() {
 
 
 //=============================================================================/
-// 5. functions: ALLOWING MENUS NESTING
+// 6. functions: ALLOWING MENUS NESTING
 //=============================================================================/
 
 /**
@@ -185,7 +231,7 @@ function multilevelMenusNesting() {
 
 
 //=============================================================================/
-// 6. functions: ADDING MENU ITEM
+// 7. functions: ADDING MENU ITEM
 //=============================================================================/
 
 /**
@@ -230,12 +276,16 @@ function plusBtnsProcedure(e) {
     if ($(modId).hasClass('show')) {
       break;
     }
-    $(e.target).one('createMenuItem', function(eSub1, data) {
+    $(e.currentTarget).one('createMenuItem', function(eSub1, data) {
       eSub1.stopPropagation();
       /**
        * Clone new element of menu.
        */
       let menuItem = cloneMenuItem(data.elName);
+      /**
+       * Make submenu draggable
+       */
+      dragDropMenuItem(menuItem.children().first());
       /**
        * Allow showing and hiding submenus after clicking on this element.
        */
@@ -245,8 +295,8 @@ function plusBtnsProcedure(e) {
       /**
        * Allow editing and removing this menu item
        */
-      menuItem.on('contextmenu', function(eSubSub2) {
-        let elName = menuItem[0].innerText;
+      menuItem.find('.menu-item').on('contextmenu', function(eSubSub2) {
+        let elName = $(this).html();
         menuItemBtnChangingProcedure(eSubSub2, {'elName': elName});
       });
       /**
@@ -289,11 +339,21 @@ function plusBtnsProcedure(e) {
       } else {
         $(this).before($(menuItem));
       }
-      $(modId).find('#menu_item_name').val('');
+      /**
+       * Clear text from text input
+       */
+      clearModInput();
       $(modId).modal('toggle');
     });
-    $(modId).one('hidden.bs.modal', $(this), function(eSub2) {
-      $(eSub2.data[0]).off('createMenuItem');
+    $(modId).one('hidden.bs.modal', function() {
+      $(e.currentTarget).off('createMenuItem');
+      clearModInput();
+      /**
+       * Remove violation msg if exists
+       */
+      if (0 != $(modId).find('h6.violation-msg').length) {
+        removeViolationMsg(modId);
+      }
     });
   } while (false)
   $(modId).modal('toggle');
@@ -323,14 +383,14 @@ function saveBtnProcedure(e) {
   let elName = $(e.target).parents(modId).find('#menu_item_name')[0].value;
   do {
     if (0 != $(modId).find('h6.violation-msg').length) {
-      removeViolationMsg();
+      removeViolationMsg(modId);
     }
     if (!validateItemName(elName)) {
-      addViolationMsg('Wpisana nazwa zawiera niedozwolone znaki.');
+      addViolationMsg('Wpisana nazwa zawiera niedozwolone znaki.', modId);
       break;
     }
     if (!checkUniquity(elName)) {
-      addViolationMsg('Nazwa jest już zajęta.');
+      addViolationMsg('Nazwa jest już zajęta.', modId);
       break;
     }
     $(plusBtnClass).trigger('createMenuItem', {'elName': elName});
@@ -356,24 +416,8 @@ function enableAddingMenuItem() {
 
 
 //=============================================================================/
-// 7. functions: CHANGING MENU ITEM
+// 8. functions: CHANGING MENU ITEM
 //=============================================================================/
-
-/**
- * Enter text in text input in modal for changing menu item
- *
- * @var {string} txt Text to enter
- */
-function enterTextForChangeRemoveModInput(txt) {
-  $(changeRemoveModId).find('#change_menu_item_name').val(txt);
-}
-
-/**
- * Clear text input with menu item name.
- */
-function clearChangeRemoveModInput() {
-  enterTextForChangeRemoveModInput('');
-}
 
 /**
  * Procedure of changing name of menu item or removing menu item.
@@ -398,7 +442,7 @@ function menuItemBtnChangingProcedure(e, data) {
      * Add event listener which reacts on clicking on "Zmień nazwę" button in
      * modal box.
      */
-    $(e.target).one('editMenuItem', function(eSub1, data) {
+    $(e.currentTarget).one('editMenuItem', function(eSub1, data) {
       eSub1.stopPropagation();
       $(this).html(data.elName);
       /**
@@ -414,11 +458,13 @@ function menuItemBtnChangingProcedure(e, data) {
      * Add event listener which reacts on clicking on "Usuń" button in
      * modal box.
      */
-    $(e.target).one('removeMenuItem', function(eSub2) {
+    $(e.currentTarget).one('removeMenuItem', function(eSub2) {
       eSub2.stopPropagation();
-      console.log($(eSub2.currentTarget).parent('.dropdown-submenu').children('.dropdown-menu').children().length);
-      //$(eSub2.currentTarget).parent('.dropdown-submenu').remove();
-      //$(eSub2.currentTarget).remove();
+      let siblings = $(eSub2.currentTarget).parent().siblings();
+      if (2 === siblings.length) {
+        siblings[0].remove();
+      }
+      $(eSub2.currentTarget).parent('.dropdown-submenu').remove();
       //Dodać kod do usuwania menu itema
 
       //Sprawdzić, czy to był ostatni menu item z tego submenu (jest tak, gdy
@@ -441,9 +487,15 @@ function menuItemBtnChangingProcedure(e, data) {
      * Remove above added event listeners, if user close modal box without
      * change name or removing menu item.
      */
-    $(changeRemoveModId).one('hidden.bs.modal', $(this), function(eSub3) {
-      $(eSub3.data[0]).off('editMenuItem');
-      $(eSub3.data[0]).off('removeMenuItem');
+    $(changeRemoveModId).one('hidden.bs.modal', function() {
+      $(e.currentTarget).off('editMenuItem');
+      $(e.currentTarget).off('removeMenuItem');
+      /**
+       * Remove violation msg if exists
+       */
+      if (0 != $(changeRemoveModId).find('h6.violation-msg').length) {
+        removeViolationMsg(changeRemoveModId);
+      }
       clearChangeRemoveModInput();
     });
   } while (false);
@@ -471,7 +523,22 @@ function enableMenuItemBtnChanging() {
 function saveNameBtnProcedure(e) {
   let elName = $(e.target).parents(changeRemoveModId)
       .find('#change_menu_item_name')[0].value;
-  $(menuItem).trigger('editMenuItem', {'elName': elName});
+  do {
+    if (0 != $(changeRemoveModId).find('h6.violation-msg').length) {
+      removeViolationMsg(changeRemoveModId);
+    }
+    if (!validateItemName(elName)) {
+      addViolationMsg('Wpisana nazwa zawiera niedozwolone znaki.',
+        changeRemoveModId);
+      break;
+    }
+    if (!checkUniquity(elName)) {
+      addViolationMsg('Nazwa jest już zajęta.',
+        changeRemoveModId);
+      break;
+    }
+    $(menuItem).trigger('editMenuItem', {'elName': elName});
+  } while (false);
 }
 
 /**
@@ -509,6 +576,69 @@ function enableChangingMenuItem() {
   enableSaveNameBtn();
   enableDeleteBtn();
 }
+
+
+//=============================================================================/
+// 9. functions: DRAG&DROP MENU ITEMS
+//=============================================================================/
+
+/**
+ * Make all submenus draggable
+ */
+function makeSubmenusDraggable() {
+  $('.menu-item').attr('draggable', 'true');  
+}
+
+/**
+ * Function for giving possibility to be dragged or dropped.
+ *
+ * @var {Object} menuItems Menu item or group of menu items, that we want to
+ *                         give possibility to be dragged or dropped
+ */
+function dragDropMenuItem(menuItems) {
+  menuItems.on('drag', function() {
+    dragged = $(this);
+  });
+  menuItems.on('dragover', function(e) {
+    e.preventDefault();
+  });
+  menuItems.on('drop', function(e) {
+    e.preventDefault();
+    let dropped = $(e.target);
+    do {
+      /**
+       * Check that user try to drop the element on itself
+       */
+      if (dropped[0] === dragged[0]) {
+        break;
+      }
+      /**
+       * Remove "+" button, if dragged element is alone in submenu
+       */
+      let numOfMenuItems = dragged.parent().parent()
+          .children('.dropdown-submenu').length;
+      if (1 === numOfMenuItems) {
+        dragged.parent().parent().children('.add-menu-item').last().remove();
+      }
+      let lastMenuItem = dropped.parent().parent()
+          .children('.dropdown-submenu').last()[0];
+      if (dropped.parent()[0] === lastMenuItem) {
+        dropped.parent()[0].after(dragged.parent()[0]);
+      } else {
+        dropped.parent()[0].before(dragged.parent()[0]);
+      }
+    } while (false);
+    dragged = dropped = undefined;
+  });
+}
+
+/**
+ * Give possibility to drag&drop to all '.menu-item'
+ */
+function dragDropAllMenuItems() {
+  dragDropMenuItem($('.menu-item'));
+}
+
 
 //=============================================================================/
 // . functions: CONTACT WITH DATABASE
