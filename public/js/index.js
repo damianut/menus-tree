@@ -707,7 +707,7 @@ function savingChanges() {
     let params = new URLSearchParams(window.location.search);
     let currentTreeId = params.get('id');
     $(inputForTreeId).val(currentTreeId);
-    $('form[name="json_menu_tree"').submit();
+    $('form[name="json_menu_tree"]').submit();
   });
 }
 /*............................................................................*/

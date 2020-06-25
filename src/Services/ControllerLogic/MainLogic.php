@@ -6,6 +6,7 @@ namespace App\Services\ControllerLogic;
 
 use App\Form\{ChangeMenuItemType, JSONMenuTreeType, MenuItemType};
 use App\Services\DatabaseActions\DatabaseActions;
+use Ramsey\Uuid\Uuid;
 use Symfony\Component\Form\FormFactoryInterface;
 use Symfony\Component\HttpFoundation\{Response, Request};
 use Twig\Environment;
@@ -61,10 +62,25 @@ class MainLogic
    */
   public function response(Request $request): Response
   {
+    /**
+     * Get ID, check that this ID has uuid4 format and return menu tree as
+     * JSON if row with given ID exists. Else return empty JSON.
+     */
     $id = $request->query->get('id');
-    //Check that this $id is UUID (w projekcie escape-from może o tym być)
-    $menusTree = $this->databaseActions->getMenuTree($id);
-
+    /**
+     * After this ternary operator $menusTree === null, if $id is null, or
+     * $id isn't valid uuid, or row with given $id not exists in database.
+     *
+     * In these cases empty tree is returned.
+     */
+    $menusTree = !\is_null($id) && Uuid::isValid($id) ?
+        $this->databaseActions->getMenuTree($id) : null;
+    if (\is_null($menusTree)) {
+      $menusTree = '{}';
+    }
+    /**
+     * Create forms and render template.
+     */
     $createMenuItemForm = $this->formFactory->create(MenuItemType::class);
     $jsonMenuTreeForm = $this->formFactory->create(JSONMenuTreeType::class);
     $changeMenuItemForm = $this->formFactory->create(ChangeMenuItemType::class);
