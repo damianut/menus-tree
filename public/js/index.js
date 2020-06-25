@@ -22,8 +22,9 @@ var menuItem = '.menu-item';
 //Dragged element
 var dragged;
 
-//Menus tree as array
+//Vars for saving menus tree as JSON.
 var menusTree = {};
+var jsonFormId = '#json_menu_tree_json_menu_tree';
 
 
 //=============================================================================/
@@ -700,12 +701,9 @@ function savingChanges() {
    */
   $('#save_to_db').on('click', function() {
     saveNamesToArray($('#menus-tree'), menusTree);
-    const url = window.location + 'save';
-    console.log(JSON.stringify(menusTree));
-    $.post(url, JSON.stringify(menusTree), function(data, status) {
-      console.log(`Data: ${data.Menu}`);
-      console.log(`Status: ${status}`);
-    });
+    let strMenusTree = JSON.stringify(menusTree);
+    $(jsonFormId).val(strMenusTree);
+    $('form[name="json_menu_tree"').submit();
   });
 }
 /*............................................................................*/

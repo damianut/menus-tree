@@ -1,0 +1,11 @@
+{% for key, value in menu %}
+<div class="dropdown-submenu">
+    <button type="button" class="btn bg-secondary text-light dropdown-item menu-item">{{ key }}</button>
+    <div class="dropdown-menu">
+        {{ include('template_parts/plus_btn.html.twig') }}
+        {% if menu[key] != [] %}
+            {{ include('template_parts/show_submenu.html.twig', {menu: menu[key]}) }}
+        {% endif %}
+    </div>
+</div>
+{% endfor %}

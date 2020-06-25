@@ -18,13 +18,18 @@ class Controller extends AbstractController
   }
 
   /**
-   * @Route("/save", name="save", methods={"POST"})
+   * @Route("/save", name="save")
    */
   public function save(Request $request)
   {
-    dump($request);
+    $jsonMenuTree = $request->request->get('json_menu_tree')['json_menu_tree'];
+    dump($jsonMenuTree);
     exit;
-    return "<p>dgd</p>";
+    $sql = '';
+    $conn = $this->getEntityManager()->getConnection();
+    $conn->execute($sql);
+
+    return "<p>sda</p>";
   }
 }
 /*............................................................................*/

@@ -11,12 +11,12 @@
 
 {% block body %}
 <button id="save_to_db" type="button" class="btn btn-success fixed-top">Zachowaj zmiany</button>
+
 <div class="btn-group-vertical ml-3 mt-5" role="group">
     <button type="button" class="btn border border-success dropdown-item add-menu-item text-center">&#43;</button>
 </div>
 
-<div>
-</div>
+<div></div>
 
 <div id="menus-tree" class="btn-group-vertical ml-3 mt-5" role="group">
     <button type="button" class="btn border border-success dropdown-item add-menu-item text-center">&#43;</button>
@@ -92,6 +92,10 @@
     <button type="button" class="btn border border-success dropdown-item add-menu-item text-center">&#43;</button>
 </div>
 
+<!-- Spróbuję teraz sprytnie wyświetlić drzewo menu-->
+
+
+
 <!-- Modal for creating item in menu -->
 <div>
     <div id="add-menu-item-modal" class="modal" tabindex="-1" role="dialog">
@@ -145,6 +149,19 @@
         </div>
     </div>
 </div>
+
+<div></div>
+<!-- Show menus tree using recursion-->
+<div class="btn-group-vertical ml-3 mt-5" role="group">
+    {{ include('template_parts/plus_btn.html.twig') }}
+    {% if jsonMenusTree != [] %}
+        {{ include('template_parts/show_submenu.html.twig', {menu: jsonMenusTree}) }}
+        {{ include('template_parts/plus_btn.html.twig') }}1
+    {% endif %}
+</div>
+
+<!-- Hidden form for redirecting to another route-->
+{{ form(jsonForm) }}
 
 <!-- Code for cloning in jQuery -->
 <div>
