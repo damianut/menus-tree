@@ -33,6 +33,7 @@ var inputForTreeId = '#json_menu_tree_tree_id';
 //=============================================================================/
 
 window.onload = function() {
+  $('#sortable-1').sortable();
   disableMenuClosing();
   multilevelMenusNesting();
   changeClickedBtnColor();
@@ -74,7 +75,9 @@ window.onload = function() {
  * @var {string} itemName Name of new menu item typed by user.
  */
 function validateItemName(itemName) {
-  let regex = new RegExp("[^\\w\\s]+", "m");
+  let pattern = "[^\\w\\sAaĄąBbCcĆćDdEeĘęFfGgHhIiJjKkLlŁłMmNnŃńOoÓóPpRrSsŚśTt" +
+      "UuWwYyZzŹźŻż]+";
+  let regex = new RegExp(pattern, "m");
 
   return !regex.test(itemName);
 }

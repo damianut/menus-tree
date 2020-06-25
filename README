@@ -1,21 +1,59 @@
-Drzewo menu. 
+Kreator menu
 
-Drzewem nawigacji jest w tym projekcie menu z zagniedżonymi submenus.
+Interaktywny kreator do tworzenia menu z zagnieżdżonymi elementami.
 
-Projekt ten można nazwać "Edytorem menu". Można też dodać podstronę do
-wyświetlania menu już bez przycisków z "plusami", jednak nie było tego w treści
-zadania.
 
-JSON zapisany w bazie danych przechowuje informacje o elementach (nazwach),
-ich dzieciach oraz kolejności w drzewie.
+.1. Wstęp:
+Tworzone menu ma strukturę drzewa i może być zapisane w formacie JSON w bazie
+danych, a następnie pobrane za pomocą wygenerowanego ID w formacie uuid4
+dostępnego w częsci "query" adresu URL, jako wartość parametru "id". Czyli:
 
-Konfiguracja projektu:
-Utworzyć zmienną DATABASE_URL w pliku .env.
+?id=<wygenerowane_id>
 
-Obsługa:
-Aby przenieść element menu na nowy poziom, najpierw trzeba utworzyć jakikolwiek
-element na tym poziomie, a dopiero potem przenieść.
-(bo buttony nie są droppable..)
+Utworzony JSON może służyć do wyrenderowania menu już bez znaków "+" w 
+środowisku produkcyjnym.
 
-Projekt był testowany w przeglądarce Mozilla Firefox.
+Łańcuch znaków w formacie JSON zawiera informacje o nazwach elementów i
+relacjach przodek – potomek dzięki klamrom oraz cudzysłowom.
+
+
+.2. Wymagane komponenty:
+.2.2. Symfony
+.2.3. Composer
+.2.4. MyQSL serwer.
+
+
+.3. Instalacja:
+.3.1. Sklonować repo `damianut/menus-tree` z GitHuba
+.3.2. Zainstalować paczki określone w pliku `composer.json`
+      $ cd <ścieżka_do_repo>
+      $ composer install
+.3.3. Uruchomić MySQL serwer.
+.3.4. Utworzyć pustą bazę danych przykładowo o nazwie `menus_tree` w MySQL.
+      Potem utworzyć użytkownika np:. 'naver'@'localhost' z
+      hasłem (korzystałem z `mysql_native_password`) i nadać mu wszystkie
+      uprawnienia do `menus_tree`.* 
+.3.5. Określić wersję serwera MySQL w pliku `config/packages/doctrine.yaml`
+.3.6. Utworzyć plik `.env.local` w katalogu głównym sklonowanego repozytorium,
+      a w nim zmienną DATABASE_URL zgodnie z formatem określonym w pliku `.env`.
+      W polach `db_user`, `db_password` i `db_name` podać odpowiednio nazwę
+      utworzonego użytkownika, jego hasło i nazwę utworzonej bazy danych.
+.3.7. Jeśli dane wprowadzone w zmiennej DATABASE_URL zawierają zarezerwowane
+      znaki zdefiniowane w RFC 3986, to zapoznać się z nastepującą stroną:
+      https://symfony.com/doc/current/doctrine.html#configuring-the-database
+.3.8. Zaimportować plik `mysql/menus_tree.sql` do utworzonej bazy danych.
+.3.9. Uruchomić serwer Symfony. Po uruchomieniu strona z kreatorem powinna być
+      domyślnie dostępna pod adresem: `localhost:8000`
+.3.10. Uruchomić przeglądarkę (projekt był testowany w Mozilla Firefox, przy
+      wyłączonej pamięci podręcznej) i wejść pod ten adres.
+
+
+.4. TODO:
+.4.1. Przemieszczanie elementów menu nie działa intuicyjnie, gdy chce się
+      umieścić element jako przedostatni.
+.4.2. Umożliwić przemieszczanie elementów do pustego submenu (zawierającego w
+      momencie przemieszczania wyłącznie przycisk ze znakiem "+")
+.4.3. Zmienić format zapisywania danych o drzewie menu lub strukturę bazy danych
+      tak, by można było poszerzać kreator o dodatkowe funkcjonalności np:.
+      tworzenie z elementu menu linka do innej strony
 /*............................................................................*/

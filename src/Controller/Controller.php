@@ -18,7 +18,7 @@ class Controller extends AbstractController
   }
 
   /**
-   * @Route("/save", name="save")
+   * @Route("/save", name="save", methods={"post"})
    */
   public function save(SaveLogic $logic, Request $request)
   {
