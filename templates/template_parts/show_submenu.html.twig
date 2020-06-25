@@ -5,6 +5,7 @@
         {{ include('template_parts/plus_btn.html.twig') }}
         {% if menu[key] != [] %}
             {{ include('template_parts/show_submenu.html.twig', {menu: menu[key]}) }}
+            {{ include('template_parts/plus_btn.html.twig') }}
         {% endif %}
     </div>
 </div>

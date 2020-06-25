@@ -5,6 +5,7 @@ declare(strict_types=1);
 namespace App\Services\ControllerLogic;
 
 use App\Form\{ChangeMenuItemType, JSONMenuTreeType, MenuItemType};
+use App\Services\DatabaseActions\DatabaseActions;
 use Symfony\Component\Form\FormFactoryInterface;
 use Symfony\Component\HttpFoundation\{Response, Request};
 use Twig\Environment;
@@ -14,6 +15,13 @@ use Twig\Environment;
  */
 class MainLogic
 {
+  /**
+   * Service for performing custom actions on database
+   *
+   * @var DatabaseActions
+   */
+  private $databaseActions;
+
   /**
    * Twig for template rendering
    * 
@@ -29,14 +37,17 @@ class MainLogic
   private $formFactory;
    
   /**
+   * @param DatabaseActions      $databaseActions
    * @param Environment          $twig
    * @param FormFactoryInterface $formFactory
    */
   public function __construct(
+      DatabaseActions $databaseActions,
       Environment $twig,
       FormFactoryInterface $formFactory
   )
   {
+    $this->databaseActions = $databaseActions;
     $this->twig = $twig;
     $this->formFactory = $formFactory;
   }
@@ -50,11 +61,9 @@ class MainLogic
    */
   public function response(Request $request): Response
   {
-    /**
-     * Kod tymczasowy. Wyświetlanie drzewa menu na podstawie poniższego stringa
-     */
-    $jsonMenusTree = '{"Menu":{},"Menu 2":{},"Menu 3":{"Menu 4":{"Menu 6":{},"Menu 7":{},"Menu 8":{"Menu 9":{},"Menu 10":{},"Menu 11":{}}},"Menu 5":{}}}';
-    $decoded = json_decode($jsonMenusTree, true);
+    $id = $request->query->get('id');
+    //Check that this $id is UUID (w projekcie escape-from może o tym być)
+    $menusTree = $this->databaseActions->getMenuTree($id);
 
     $createMenuItemForm = $this->formFactory->create(MenuItemType::class);
     $jsonMenuTreeForm = $this->formFactory->create(JSONMenuTreeType::class);
@@ -63,7 +72,7 @@ class MainLogic
         'createForm' => $createMenuItemForm->createView(),
         'jsonForm' => $jsonMenuTreeForm->createView(),
         'changeForm' => $changeMenuItemForm->createView(),
-        'jsonMenusTree' => $decoded,
+        'jsonMenusTree' => json_decode($menusTree, true),
     ]);
     
     return new Response($content);

@@ -2,7 +2,7 @@
 
 namespace App\Controller;
 
-use App\Services\ControllerLogic\MainLogic;
+use App\Services\ControllerLogic\{MainLogic, SaveLogic};
 use Symfony\Bundle\FrameworkBundle\Controller\AbstractController;
 use Symfony\Component\HttpFoundation\Request;
 use Symfony\Component\Routing\Annotation\Route;
@@ -12,7 +12,7 @@ class Controller extends AbstractController
   /**
    * @Route("/", name="main")
    */
-  public function index(MainLogic $logic, Request $request)
+  public function main(MainLogic $logic, Request $request)
   {
     return $logic->response($request);
   }
@@ -20,16 +20,9 @@ class Controller extends AbstractController
   /**
    * @Route("/save", name="save")
    */
-  public function save(Request $request)
+  public function save(SaveLogic $logic, Request $request)
   {
-    $jsonMenuTree = $request->request->get('json_menu_tree')['json_menu_tree'];
-    dump($jsonMenuTree);
-    exit;
-    $sql = '';
-    $conn = $this->getEntityManager()->getConnection();
-    $conn->execute($sql);
-
-    return "<p>sda</p>";
+    return $logic->response($request);
   }
 }
 /*............................................................................*/

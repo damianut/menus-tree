@@ -13,6 +13,7 @@ class JSONMenuTreeType extends AbstractType
     {
         $builder
             ->add('json_menu_tree', Type\HiddenType::class)
+            ->add('tree_id', Type\HiddenType::class)
         ;
     }
 

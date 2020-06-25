@@ -10,92 +10,61 @@
 {% endblock head %}
 
 {% block body %}
-<button id="save_to_db" type="button" class="btn btn-success fixed-top">Zachowaj zmiany</button>
-
-<div class="btn-group-vertical ml-3 mt-5" role="group">
-    <button type="button" class="btn border border-success dropdown-item add-menu-item text-center">&#43;</button>
-</div>
-
-<div></div>
-
-<div id="menus-tree" class="btn-group-vertical ml-3 mt-5" role="group">
-    <button type="button" class="btn border border-success dropdown-item add-menu-item text-center">&#43;</button>
-    <div class="dropdown-submenu">
-        <button type="button" class="btn bg-secondary text-light dropdown-item menu-item">Menu</button>
-        <div class="dropdown-menu">
-            <button type="button" class="btn border border-success dropdown-item add-menu-item text-center">&#43;</button>
+<div class="d-flex justify-content-center mt-3">
+    <div class="card w-50">
+        <div class="card-header">
+            <h4 class="card-title font-weight-bold text-center">Kreator drzewa nawigacji</h4>
         </div>
-    </div>
-    <div class="dropdown-submenu">
-        <button type="button" class="btn bg-secondary text-light dropdown-item menu-item">Menu 2</button>
-        <div class="dropdown-menu">
-            <button type="button" class="btn border border-success dropdown-item add-menu-item text-center">&#43;</button>
-        </div>
-    </div>
-    <div class="dropdown-submenu">
-        <button type="button" class="btn bg-secondary text-light dropdown-item menu-item">Menu 3</button>
-        <div class="dropdown-menu">
-            <button type="button" class="btn border border-success dropdown-item add-menu-item text-center">&#43;</button>
-            <div class="dropdown-submenu">
-                <button type="button" class="btn bg-secondary text-light dropdown-item menu-item">Menu 4</button>
-                <div class="dropdown-menu">
-                    <button type="button" class="btn border border-success dropdown-item add-menu-item text-center">&#43;</button>
-                    <div class="dropdown-submenu">
-                        <button type="button" class="btn bg-secondary text-light dropdown-item menu-item">Menu 6</button>
-                        <div class="dropdown-menu">
-                            <button type="button" class="btn border border-success dropdown-item add-menu-item text-center">&#43;</button>
-                        </div>
-                    </div>
-                    <div class="dropdown-submenu">
-                       <button type="button" class="btn bg-secondary text-light dropdown-item menu-item">Menu 7</button>
-                       <div class="dropdown-menu">
-                           <button type="button" class="btn border border-success dropdown-item add-menu-item text-center">&#43;</button>
-                       </div>
-                    </div>
-                    <div class="dropdown-submenu">
-                        <button type="button" class="btn bg-secondary text-light dropdown-item menu-item">Menu 8</button>
-                        <div class="dropdown-menu">
-                            <button type="button" class="btn border border-success dropdown-item add-menu-item text-center">&#43;</button>
-                            <div class="dropdown-submenu">
-                                <button type="button" class="btn bg-secondary text-light dropdown-item menu-item">Menu 9</button>
-                                <div class="dropdown-menu">
-                                    <button type="button" class="btn border border-success dropdown-item add-menu-item text-center">&#43;</button>
-                                </div>
-                            </div>
-                            <div class="dropdown-submenu">
-                                <button type="button" class="btn bg-secondary text-light dropdown-item menu-item">Menu 10</button>
-                                <div class="dropdown-menu">
-                                    <button type="button" class="btn border border-success dropdown-item add-menu-item text-center">&#43;</button>
-                                </div>
-                            </div>
-                            <div class="dropdown-submenu">
-                                <button type="button" class="btn bg-secondary text-light dropdown-item menu-item">Menu 11</button>
-                                <div class="dropdown-menu">
-                                    <button type="button" class="btn border border-success dropdown-item add-menu-item text-center">&#43;</button>
-                                </div>
-                            </div>
-                            <button type="button" class="btn border border-success dropdown-item add-menu-item text-center">&#43;</button>
-                        </div>
-                    </div>
-                    <button type="button" class="btn border border-success dropdown-item add-menu-item text-center">&#43;</button>
-                </div> 
+        <div class="card-body">
+            <div class="d-flex justify-content-around">
+                <button type="button" class="btn btn-primary" data-toggle="collapse" data-target="#instructions_list">Opis korzystania</button>               
+                <!-- Button for saving changes in menu tree -->
+                <button id="save_to_db" type="button" class="btn btn-success">Zachowaj zmiany</button>
             </div>
-            <div class="dropdown-submenu">
-                <button type="button" class="btn bg-secondary text-light dropdown-item menu-item">Menu 5</button>
-                <div class="dropdown-menu">
-                    <button type="button" class="btn border border-success dropdown-item add-menu-item text-center">&#43;</button>
-                </div>
-            </div>
-            <button type="button" class="btn border border-success dropdown-item add-menu-item text-center">&#43;</button>
+            <hr>
+            <ul id="instructions_list" class="list-group list-group-flush collapse">
+                <li class="list-group-item">
+                    <p class="font-weight-bold card-text">1. Tworzenie elementu menu.</p>
+                    <p class="card-text">Kliknij LPM na przycisk z "+" i postępuj zgodnie z dalszymi instrukcjami.</p>
+                </li>
+                <li class="list-group-item">
+                    <p class="font-weight-bold card-text">2. Zmiana nazwy lub usunięcie elementu menu.</p>
+                    <p class="card-text">Kliknij na element menu PPM i postępuj zgodnie z dalszymi instrukcjami</p>
+                </li>
+                <li class="list-group-item">
+                    <p class="font-weight-bold card-text">3. Tworzenie podmenu dla danego elementu menu.</p>
+                    <p class="card-text">Kliknij na element menu LPM, a następnie kliknij LPM na przycisk z plus i postępuj zgodnie z dalszymi instrukcjami.</p>
+                </li>
+                <li class="list-group-item">
+                    <p class="font-weight-bold card-text">4. Otwieranie podmenu.</p>
+                    <p class="card-text">Kliknij na elementu menu LPM</p>
+                </li>
+                <li class="list-group-item">
+                    <p class="font-weight-bold card-text">5. Przemieszczanie elementu menu.</p>
+                    <p class="card-text">Najedź kursorem na element, przytrzymaj LPM i przenieś element w pożądane miejsce. Jeśli chcesz przenieść element do jednego z podmenu (na inny poziom menu), otwórz najpierw te podmenu; aby jego elementy były widoczne.</p>
+                    <p class="card-text">Nie można przemieszczać elementu menu (lub podmenu) do podmenu potomnego.</p>
+                </li>
+                <li class="list-group-item card-text">
+                    <p class="font-weight-bold">6. Zapisywanie menu.</p>
+                    <p class="card-text">Kliknij przycisk "Zachowaj zmiany". Strona zostanie odświeżona, a w pasku adresu strony, po znakach "?id=" pojawi się unikalne ID Twojego menu. Zachowaj swoje ID, aby przy kolejnym wejściu na stronie móc edytować utworzone drzewo.</p>
+                </li>
+                <li class="list-group-item card-text">
+                    <p class="font-weight-bold">7. Wczytywanie menu.</p>
+                    <p class="card-text">W pasku adresu, po ostatnim znaku "/" dopisz: "?id=twoje_id", gdzie twoje_id to ID wygenerowane przy poprzednim zapisywaniu menu.</p>
+                </li>
+            </ul>
         </div>
     </div>
-    <button type="button" class="btn border border-success dropdown-item add-menu-item text-center">&#43;</button>
 </div>
-
-<!-- Spróbuję teraz sprytnie wyświetlić drzewo menu-->
-
-
-
+<hr>
+<!-- Show menus tree using recursion-->
+<div id="menus-tree" class="btn-group-vertical ml-4 mt-4" role="group">
+    {{ include('template_parts/plus_btn.html.twig') }}
+    {% if jsonMenusTree != [] %}
+        {{ include('template_parts/show_submenu.html.twig', {menu: jsonMenusTree}) }}
+        {{ include('template_parts/plus_btn.html.twig') }}
+    {% endif %}
+</div>
 <!-- Modal for creating item in menu -->
 <div>
     <div id="add-menu-item-modal" class="modal" tabindex="-1" role="dialog">
@@ -150,31 +119,23 @@
     </div>
 </div>
 
-<div></div>
-<!-- Show menus tree using recursion-->
-<div class="btn-group-vertical ml-3 mt-5" role="group">
-    {{ include('template_parts/plus_btn.html.twig') }}
-    {% if jsonMenusTree != [] %}
-        {{ include('template_parts/show_submenu.html.twig', {menu: jsonMenusTree}) }}
-        {{ include('template_parts/plus_btn.html.twig') }}1
-    {% endif %}
-</div>
-
-<!-- Hidden form for redirecting to another route-->
-{{ form(jsonForm) }}
-
 <!-- Code for cloning in jQuery -->
 <div>
     <!-- Menu item with empty submenu for cloning while adding new element in menu -->
     <div id="empty-submenu" class="dropdown-submenu d-none">
         <button type="button" class="btn bg-secondary text-light dropdown-item menu-item"></button>
         <div class="dropdown-menu">
-            <button type="button" class="btn border border-success dropdown-item add-menu-item text-center">&#43;</button>
+            {{ include('template_parts/plus_btn.html.twig') }}
         </div>
     </div>
     
     <!-- "Prototype" of "+" button -->
     <button id="proto-plus-btn"  type="button" class="btn border border-success dropdown-item add-menu-item text-center d-none">&#43;</button>
 </div>
+
+<div></div>
+
+<!-- Hidden form for redirecting to another route-->
+{{ form(jsonForm) }}
 
 {% endblock body %}
