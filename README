@@ -14,13 +14,13 @@ Utworzony JSON może służyć do wyrenderowania menu już bez znaków "+" w
 środowisku produkcyjnym.
 
 Łańcuch znaków w formacie JSON zawiera informacje o nazwach elementów i
-relacjach przodek – potomek dzięki klamrom oraz cudzysłowom.
+relacjach przodek – potomek, dzięki klamrom oraz cudzysłowom.
 
 
 .2. Wymagane komponenty:
 .2.2. Serwer HTTP
 .2.3. Composer
-.2.4. MyQSL serwer.
+.2.4. Serwer MySQL
 
 
 .3. Instalacja:
@@ -53,7 +53,7 @@ relacjach przodek – potomek dzięki klamrom oraz cudzysłowom.
       znaki zdefiniowane w RFC 3986, to proszę zapoznać się
       z nastepującą stroną:
       https://symfony.com/doc/current/doctrine.html#configuring-the-database
-.3.9. Zaimportować plik `mysql/menus_tree.sql` do utworzonej bazy danych.
+.3.9. Zaimportować plik `mysql/trees.sql` do utworzonej bazy danych.
 .3.10. Uruchomić serwer. Jeśli korzystamy z Symfony Local Web Server, to po
        uruchomieniu strona z kreatorem powinna być domyślnie dostępna
        pod adresem: `127.0.0.1:8000`
@@ -73,8 +73,9 @@ relacjach przodek – potomek dzięki klamrom oraz cudzysłowom.
 .4.1. Przemieszczanie elementów menu nie działa intuicyjnie, gdy użytkownik chce
       umieścić element menu jako przedostatni w danym menu lub podmenu.
 .4.2. Umożliwić przemieszczanie elementów do pustego podmenu (zawierającego w
-      momencie przemieszczania wyłącznie przycisk ze znakiem "+")
-.4.3. Zmienić format zapisywania danych o drzewie menu lub strukturę bazy danych
-      tak, by można było poszerzać kreator o dodatkowe funkcjonalności np:.
-      tworzenie z elementu menu linka do innej strony
+      momencie przemieszczania wyłącznie przycisk ze znakiem "+") bez
+      konieczności tworzenia tymczasowego elementu w pustym podmenu,
+.4.3. Zmienić sposób przetwarzania danych o drzewie menu lub strukturę bazy
+      danych tak, by można było poszerzać kreator o dodatkowe funkcjonalności
+      np. tworzenie z elementu menu linka do innej strony.
 /*............................................................................*/
