@@ -6,7 +6,7 @@ Interaktywny kreator do tworzenia menu z zagnieżdżonymi elementami.
 .1. Wstęp:
 Tworzone menu ma strukturę drzewa i może być zapisane w formacie JSON w bazie
 danych, a następnie pobrane za pomocą wygenerowanego ID w formacie uuid4
-dostępnego w częsci "query" adresu URL, jako wartość parametru "id". Czyli:
+dostępnego w części "query" adresu URL, jako wartość parametru "id". Czyli:
 
 ?id=<wygenerowane_id>
 
@@ -28,30 +28,39 @@ relacjach przodek – potomek dzięki klamrom oraz cudzysłowom.
 .3.2. Zainstalować paczki określone w pliku `composer.json`
       $ cd <ścieżka_do_repo>
       $ composer install
+
+      Po instalacji pojawi się błąd, w którym będzie napisane; że nie ma
+      zdefiniowanej zmiennej `DATABASE_URL` – będzie o tym w kolejnych punktach
 .3.3. Uruchomić MySQL serwer.
 .3.4. Utworzyć pustą bazę danych przykładowo o nazwie `menus_tree` w MySQL.
       Potem utworzyć użytkownika np:. 'naver'@'localhost' z
       hasłem (korzystałem z `mysql_native_password`) i nadać mu wszystkie
       uprawnienia do `menus_tree`.* 
-.3.5. Określić wersję serwera MySQL w pliku `config/packages/doctrine.yaml`
+.3.5. Określić wersję używanego serwera MySQL w pliku
+      `config/packages/doctrine.yaml`
 .3.6. Utworzyć plik `.env.local` w katalogu głównym sklonowanego repozytorium,
       a w nim zmienną DATABASE_URL zgodnie z formatem określonym w pliku `.env`.
       W polach `db_user`, `db_password` i `db_name` podać odpowiednio nazwę
       utworzonego użytkownika, jego hasło i nazwę utworzonej bazy danych.
 .3.7. Jeśli dane wprowadzone w zmiennej DATABASE_URL zawierają zarezerwowane
-      znaki zdefiniowane w RFC 3986, to zapoznać się z nastepującą stroną:
+      znaki zdefiniowane w RFC 3986, to proszę zapoznać się
+      z nastepującą stroną:
       https://symfony.com/doc/current/doctrine.html#configuring-the-database
 .3.8. Zaimportować plik `mysql/menus_tree.sql` do utworzonej bazy danych.
 .3.9. Uruchomić serwer Symfony. Po uruchomieniu strona z kreatorem powinna być
-      domyślnie dostępna pod adresem: `localhost:8000`
+      domyślnie dostępna pod adresem: `127.0.0.1:8000`
 .3.10. Uruchomić przeglądarkę (projekt był testowany w Mozilla Firefox, przy
-      wyłączonej pamięci podręcznej) i wejść pod ten adres.
-
+       wyłączonej pamięci podręcznej) i wejść pod ten adres.
+.3.11. W zaimportowanej tabeli z pliku `trees.sql` znajduje się już jeden wpis
+       z danymi o menu. Aby zobaczyć te menu, należy wpisać w pasku adresu URL:
+       127.0.0.1:8000/?id=1c6d7e6d-7c81-4931-8343-d3a36ad17659
+.3.12. Instrukcja korzystania z kreatora jest dostępna po kliknięciu 
+       niebieskiego przycisku "Opis korzystania" na górze strony.
 
 .4. TODO:
-.4.1. Przemieszczanie elementów menu nie działa intuicyjnie, gdy chce się
-      umieścić element jako przedostatni.
-.4.2. Umożliwić przemieszczanie elementów do pustego submenu (zawierającego w
+.4.1. Przemieszczanie elementów menu nie działa intuicyjnie, gdy użytkownik chce
+      umieścić element menu jako przedostatni w danym menu lub podmenu.
+.4.2. Umożliwić przemieszczanie elementów do pustego podmenu (zawierającego w
       momencie przemieszczania wyłącznie przycisk ze znakiem "+")
 .4.3. Zmienić format zapisywania danych o drzewie menu lub strukturę bazy danych
       tak, by można było poszerzać kreator o dodatkowe funkcjonalności np:.
