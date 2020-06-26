@@ -33,7 +33,6 @@ var inputForTreeId = '#json_menu_tree_tree_id';
 //=============================================================================/
 
 window.onload = function() {
-  $('#sortable-1').sortable();
   disableMenuClosing();
   multilevelMenusNesting();
   changeClickedBtnColor();
