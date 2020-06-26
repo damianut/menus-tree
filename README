@@ -18,44 +18,56 @@ relacjach przodek – potomek dzięki klamrom oraz cudzysłowom.
 
 
 .2. Wymagane komponenty:
-.2.2. Symfony
+.2.2. Serwer HTTP
 .2.3. Composer
 .2.4. MyQSL serwer.
 
 
 .3. Instalacja:
-.3.1. Sklonować repo `damianut/menus-tree` z GitHuba
-.3.2. Zainstalować paczki określone w pliku `composer.json`
-      $ cd <ścieżka_do_repo>
-      $ composer install
+.3.1. Przejść do katalogu komputera, z którego serwer HTTP może hostować ten
+      kreator. W trakcie testów korzystano z Symfony Local Web Server, który 
+      pozwala w prosty sposób przetestować kreator – serwer można uruchomić tam,
+      gdzie jest sklonowane repozytorium.
+      W przypadku serwera Apache na systemu Ubuntu 18.04 jest to katalog:
+      `/var/www/html/`
+.3.2. Sklonować repo `damianut/menus-tree` z GitHuba
+.3.3. Wejść do sklonowanego repozytorium i zainstalować paczki określone
+      w pliku `composer.json` za pomocą komendy `composer install`
 
       Po instalacji pojawi się błąd, w którym będzie napisane; że nie ma
-      zdefiniowanej zmiennej `DATABASE_URL` – będzie o tym w kolejnych punktach
-.3.3. Uruchomić MySQL serwer.
-.3.4. Utworzyć pustą bazę danych przykładowo o nazwie `menus_tree` w MySQL.
-      Potem utworzyć użytkownika np:. 'naver'@'localhost' z
-      hasłem (korzystałem z `mysql_native_password`) i nadać mu wszystkie
-      uprawnienia do `menus_tree`.* 
-.3.5. Określić wersję używanego serwera MySQL w pliku
+      zdefiniowanej zmiennej `DATABASE_URL` – o jej zdefiniowaniu będzie 
+      napisane w kolejnych punktach.
+.3.4. Uruchomić MySQL serwer.
+.3.5. Utworzyć w nim pustą bazę danych przykładowo o nazwie `menus_tree`.
+      Potem utworzyć użytkownika np. 'naver'@'localhost' z hasłem.
+      Do poświadczania użytkownika korzystałem z pluginu
+      `mysql_native_password`. 
+      Następnie nadać mu wszystkie uprawnienia do `menus_tree`.* 
+.3.6. Określić wersję używanego serwera MySQL w pliku
       `config/packages/doctrine.yaml`
-.3.6. Utworzyć plik `.env.local` w katalogu głównym sklonowanego repozytorium,
+.3.7. Utworzyć plik `.env.local` w katalogu głównym sklonowanego repozytorium,
       a w nim zmienną DATABASE_URL zgodnie z formatem określonym w pliku `.env`.
       W polach `db_user`, `db_password` i `db_name` podać odpowiednio nazwę
       utworzonego użytkownika, jego hasło i nazwę utworzonej bazy danych.
-.3.7. Jeśli dane wprowadzone w zmiennej DATABASE_URL zawierają zarezerwowane
+.3.8. Jeśli dane wprowadzone w zmiennej DATABASE_URL zawierają zarezerwowane
       znaki zdefiniowane w RFC 3986, to proszę zapoznać się
       z nastepującą stroną:
       https://symfony.com/doc/current/doctrine.html#configuring-the-database
-.3.8. Zaimportować plik `mysql/menus_tree.sql` do utworzonej bazy danych.
-.3.9. Uruchomić serwer Symfony. Po uruchomieniu strona z kreatorem powinna być
-      domyślnie dostępna pod adresem: `127.0.0.1:8000`
-.3.10. Uruchomić przeglądarkę (projekt był testowany w Mozilla Firefox, przy
-       wyłączonej pamięci podręcznej) i wejść pod ten adres.
-.3.11. W zaimportowanej tabeli z pliku `trees.sql` znajduje się już jeden wpis
-       z danymi o menu. Aby zobaczyć te menu, należy wpisać w pasku adresu URL:
-       127.0.0.1:8000/?id=1c6d7e6d-7c81-4931-8343-d3a36ad17659
+.3.9. Zaimportować plik `mysql/menus_tree.sql` do utworzonej bazy danych.
+.3.10. Uruchomić serwer. Jeśli korzystamy z Symfony Local Web Server, to po
+       uruchomieniu strona z kreatorem powinna być domyślnie dostępna
+       pod adresem: `127.0.0.1:8000`
+.3.11. Uruchomić przeglądarkę (projekt był testowany w Mozilla Firefox, przy
+       wyłączonej pamięci podręcznej) i wejść adres, pod którym dostępny jest
+       plik `public/index.php`. W przypadku serwera Symfony jest to adres
+       wspomniany w poprzednim podpunkcie.
+.3.12. W zaimportowanej tabeli z pliku `trees.sql` znajduje się już jeden wpis
+       z danymi o menu. Aby zobaczyć te menu, należy dopisać do adresu URL
+       zapytanie:
+       ?id=1c6d7e6d-7c81-4931-8343-d3a36ad17659
 .3.12. Instrukcja korzystania z kreatora jest dostępna po kliknięciu 
        niebieskiego przycisku "Opis korzystania" na górze strony.
+
 
 .4. TODO:
 .4.1. Przemieszczanie elementów menu nie działa intuicyjnie, gdy użytkownik chce
